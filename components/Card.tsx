@@ -1,3 +1,7 @@
+import Image from "next/image";
+import favorite from "../public/images/favorite.svg";
+import time from "../public/images/time.svg";
+
 export type Post = {
   author: string;
   story_title: string;
@@ -7,10 +11,37 @@ export type Post = {
 
 export const Card = ({ post }: { post: Post }) => {
   return (
-    <div>
-      <div className="title">3 hours ago by {post.author}</div>
-      <p>{post.story_title}</p>
+    <div className="card">
+      <div>
+        <div className="flex align-items title">
+          <Image src={time} alt="favorite" />
+          <div className="pl-2">3 hours ago by {post.author}</div>
+        </div>
+        <p>{post.story_title}</p>
+      </div>
+      <div className="favorite-container">
+        <Image src={favorite} alt="favorite" width={24} height={24} />
+      </div>
+
       <style jsx>{`
+        .favorite-container {
+          width: 4.25rem;
+          padding: 2.188rem 1.375rem 2.063rem;
+          border-radius: 6px;
+          border: solid 1px #f5f5f5;
+          background-color: #f5f5f5;
+        }
+
+        .card {
+          display: flex;
+          padding-left: 1.625rem;
+          margin: 1rem;
+          width: 34.375rem;
+          border-radius: 6px;
+          border: solid 1px #979797;
+          background-color: #fff;
+        }
+
         p {
           width: 27.5rem;
           height: 2.5rem;
@@ -25,10 +56,9 @@ export const Card = ({ post }: { post: Post }) => {
         }
 
         .title {
-          height: 0.813rem;
-          margin: 1rem 20.313rem 0.438rem 0.5rem;
+          padding-top: 1rem;
           font-family: Roboto;
-          font-size: 0.688rem;
+          font-size: 0.7rem;
           color: #767676;
         }
       `}</style>

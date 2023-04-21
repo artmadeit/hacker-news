@@ -8,6 +8,7 @@
   --background-end-rgb: 255, 255, 255;
 
   --azure: #1797ff;
+  --brownish-grey: #6b6b6b;
 }
 
 @media (prefers-color-scheme: dark) {
