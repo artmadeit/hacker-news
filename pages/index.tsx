@@ -2,6 +2,7 @@ import { Card, Post } from "@/components/Card";
 import { Tabs } from "@/components/Tabs";
 import { Header } from "@/components/header";
 import Head from "next/head";
+import { useState } from "react";
 import useSWR from "swr";
 
 const fetcher = async (url: string) => {
@@ -10,6 +11,8 @@ const fetcher = async (url: string) => {
 };
 
 const NextPageHacker = () => {
+  const [activeTab, setActiveTab] = useState("all");
+
   const query = "angular";
   const page = 0;
   const { data: posts } = useSWR<Post[]>(
@@ -29,7 +32,7 @@ const NextPageHacker = () => {
       </Head>
       <Header />
       <div className="py-16 flex justify-center">
-        <Tabs />
+        <Tabs activeTab={activeTab} onChangeTab={setActiveTab} />
       </div>
       <div>
         {posts && posts.map((post, index) => <Card key={index} post={post} />)}

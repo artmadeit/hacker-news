@@ -1,8 +1,24 @@
-export const Tabs = () => {
+export const Tabs = ({
+  activeTab,
+  onChangeTab,
+}: {
+  activeTab: string;
+  onChangeTab: Function;
+}) => {
   return (
     <div>
-      <button className="rectangle isActive">All</button>
-      <button className="rectangle">My faves</button>
+      <button
+        className={`rectangle ${activeTab === "all" ? "isActive" : ""} `}
+        onClick={() => onChangeTab("all")}
+      >
+        All
+      </button>
+      <button
+        className={`rectangle ${activeTab === "my-faves" ? "isActive" : ""} `}
+        onClick={() => onChangeTab("my-faves")}
+      >
+        My faves
+      </button>
       <style jsx>{`
         .rectangle {
           width: 6.125rem;
