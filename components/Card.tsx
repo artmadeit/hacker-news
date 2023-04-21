@@ -1,6 +1,7 @@
 import Image from "next/image";
 import favorite from "../public/images/favorite.svg";
 import time from "../public/images/time.svg";
+import TimeAgo from "react-timeago";
 
 export type Post = {
   author: string;
@@ -15,7 +16,9 @@ export const Card = ({ post }: { post: Post }) => {
       <div>
         <div className="flex align-items title">
           <Image src={time} alt="favorite" />
-          <div className="pl-2">3 hours ago by {post.author}</div>
+          <div className="pl-2">
+            <TimeAgo date={post.created_at} /> by {post.author}
+          </div>
         </div>
         <p>{post.story_title}</p>
       </div>
