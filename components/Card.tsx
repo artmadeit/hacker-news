@@ -1,5 +1,6 @@
 import Image from "next/image";
 import favorite from "../public/images/favorite.svg";
+import favoriteOutline from "../public/images/favorite-outline.svg";
 import time from "../public/images/time.svg";
 import TimeAgo from "react-timeago";
 
@@ -10,10 +11,18 @@ export type Post = {
   created_at: string;
 };
 
-export const Card = ({ post }: { post: Post }) => {
+export const Card = ({
+  post,
+  isFavorite,
+  toggleFavorite,
+}: {
+  post: Post;
+  isFavorite: boolean;
+  toggleFavorite: Function;
+}) => {
   return (
     <div className="card">
-      <div>
+      <a href={post.story_url} target="_blank">
         <div className="flex align-items title">
           <Image src={time} alt="favorite" />
           <div className="pl-2">
@@ -21,9 +30,16 @@ export const Card = ({ post }: { post: Post }) => {
           </div>
         </div>
         <p>{post.story_title}</p>
-      </div>
+      </a>
       <div className="favorite-container">
-        <Image src={favorite} alt="favorite" width={24} height={24} />
+        <Image
+          className="cursor-pointer"
+          src={isFavorite ? favorite : favoriteOutline}
+          alt="favorite"
+          width={24}
+          height={24}
+          onClick={() => toggleFavorite(post, isFavorite)}
+        />
       </div>
 
       <style jsx>{`

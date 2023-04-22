@@ -12,6 +12,7 @@ const fetcher = async (url: string) => {
 
 const NextPageHacker = () => {
   const [activeTab, setActiveTab] = useState("all");
+  const [favoritePosts, setFavoritePosts] = useState<Post[]>([]);
 
   const query = "angular";
   const page = 0;
@@ -19,6 +20,14 @@ const NextPageHacker = () => {
     `https://hn.algolia.com/api/v1/search_by_date?query=${query}&page=${page}`,
     fetcher
   );
+
+  const toggleFavorite = (post: Post, isFavorite: boolean) => {
+    if (isFavorite) {
+      setFavoritePosts((prev) => prev.filter((x) => x !== post));
+    } else {
+      setFavoritePosts((prev) => [...prev, post]);
+    }
+  };
 
   return (
     <div
@@ -35,7 +44,15 @@ const NextPageHacker = () => {
         <Tabs activeTab={activeTab} onChangeTab={setActiveTab} />
       </div>
       <div>
-        {posts && posts.map((post, index) => <Card key={index} post={post} />)}
+        {posts &&
+          posts.map((post, index) => (
+            <Card
+              key={index}
+              post={post}
+              isFavorite={favoritePosts.includes(post)}
+              toggleFavorite={toggleFavorite}
+            />
+          ))}
       </div>
     </div>
   );
