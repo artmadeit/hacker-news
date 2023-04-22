@@ -1,4 +1,5 @@
 import { Card, Post } from "@/components/Card";
+import { Search } from "@/components/Search";
 import { Tabs } from "@/components/Tabs";
 import { Header } from "@/components/header";
 import Head from "next/head";
@@ -42,6 +43,9 @@ const NextPageHacker = () => {
       <Header />
       <div className="py-16 flex justify-center">
         <Tabs activeTab={activeTab} onChangeTab={setActiveTab} />
+      </div>
+      <div>
+        <Search/>
       </div>
       <div>
         {posts &&
