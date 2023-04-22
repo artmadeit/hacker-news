@@ -5,10 +5,20 @@ import Head from "next/head";
 import { useState } from "react";
 import useSWR from "swr";
 
-const fetcher = async (url: string) => {
-  const data = await fetch(url).then((res) => res.json());
-  return data.hits;
+type Page = {
+  hits: Post[];
 };
+
+const fetcher = async (url: string) => {
+  const data = await fetch(url).then<Page>((res) => res.json());
+  return data.hits.filter(hasRequiredProperties);
+};
+
+function hasRequiredProperties(x: Post): boolean {
+  return [x.author, x.created_at, x.story_title, x.story_url].every((x) =>
+    Boolean(x)
+  );
+}
 
 const NextPageHacker = () => {
   const [activeTab, setActiveTab] = useState("all");
