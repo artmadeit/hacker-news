@@ -11,17 +11,14 @@ export const Search = () => {
 
   const placeholder = "Select your news";
 
-  const onSelectItem =
-    (item: string): MouseEventHandler =>
-    (event) => {
-      console.log("lelelel");
-      setItem(item);
-      setOpen(false);
-    };
-
   return (
     <div style={{ margin: "20px 0px 20px 122px" }}>
-      <div className="relative w-[30rem]">
+      <div
+        className="relative w-[30rem]"
+        onBlur={() => {
+          setOpen(false);
+        }}
+      >
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
@@ -37,20 +34,20 @@ export const Search = () => {
           <ul className="z-2 absolute mt-1 w-full rounded bg-gray-50 ring-1 ring-gray-300">
             <li
               className="cursor-pointer select-none p-2 hover:bg-gray-200 flex gap-2"
-              onClick={onSelectItem("angular")}
+              onMouseDown={() => setItem("angular")}
             >
               <Image src={angular} alt="angular" /> Angular
             </li>
             <li
               className="cursor-pointer select-none p-2 hover:bg-gray-200  flex gap-2"
-              onClick={onSelectItem("reactjs")}
+              onMouseDown={() => setItem("reactjs")}
             >
               <Image src={reactjs} alt="reactjs" />
               React
             </li>
             <li
               className="cursor-pointer select-none p-2 hover:bg-gray-200  flex gap-2"
-              onClick={onSelectItem("vuejs")}
+              onMouseDown={() => setItem("vuejs")}
             >
               <Image src={vuejs} alt="vuejs" /> Vuejs
             </li>
