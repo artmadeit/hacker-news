@@ -1,8 +1,9 @@
+export type TabValues = "all" | "my-faves";
 export const Tabs = ({
   activeTab,
   onChangeTab,
 }: {
-  activeTab: string;
+  activeTab: TabValues;
   onChangeTab: Function;
 }) => {
   return (

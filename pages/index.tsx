@@ -1,6 +1,6 @@
 import { Card, Post } from "@/components/Card";
 import { Select } from "@/components/Select";
-import { Tabs } from "@/components/Tabs";
+import { TabValues, Tabs } from "@/components/Tabs";
 import { Header } from "@/components/header";
 import Head from "next/head";
 import { useState } from "react";
@@ -17,7 +17,7 @@ function hasRequiredProperties(x: Post): boolean {
 }
 
 const NextPageHacker = () => {
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState<TabValues>("all");
   const [favoritePosts, setFavoritePosts] = useState<Post[]>([]);
 
   const [query, setQuery] = useState("");
@@ -65,13 +65,15 @@ const NextPageHacker = () => {
         <Tabs activeTab={activeTab} onChangeTab={setActiveTab} />
       </div>
       <div className="container mx-auto px-36">
-        <div className="pb-4">
-          <Select
-            placeholder="Select your news"
-            value={query}
-            onSelect={setQuery}
-          />
-        </div>
+        {activeTab === "all" && (
+          <div className="pb-4">
+            <Select
+              placeholder="Select your news"
+              value={query}
+              onSelect={setQuery}
+            />
+          </div>
+        )}
 
         <div className="posts py-4">
           {posts &&
