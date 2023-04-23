@@ -75,7 +75,6 @@ export const Card = ({
 
         .title {
           padding-top: 1rem;
-          font-family: Roboto;
           font-size: 0.7rem;
           color: #767676;
         }

@@ -11,6 +11,24 @@ type SelectProps = {
   onSelect: Function;
 };
 
+const items = [
+  {
+    key: "angular",
+    label: "Angular",
+    icon: <Image src={angular} alt="angular" width={24} />,
+  },
+  {
+    key: "reactjs",
+    label: "React",
+    icon: <Image src={reactjs} alt="reactjs" width={24} />,
+  },
+  {
+    key: "vuejs",
+    label: "Vuejs",
+    icon: <Image src={vuejs} alt="vuejs" width={24} />,
+  },
+];
+
 export const Select = ({ placeholder, value, onSelect }: SelectProps) => {
   const [open, setOpen] = useState(false);
 
@@ -27,7 +45,11 @@ export const Select = ({ placeholder, value, onSelect }: SelectProps) => {
           onClick={() => setOpen((prev) => !prev)}
           className="flex w-full items-center justify-between rounded bg-white p-2 ring-1 ring-gray-300"
         >
-          <span>{value == "" ? placeholder : value}</span>
+          <span>
+            {value == ""
+              ? placeholder
+              : items.find((x) => x.key === value)?.label}
+          </span>
           <span className="text-2xl w-4 h-4 grid place-content-center">
             <Image src={angleDown} alt="angle down" />
           </span>
@@ -35,25 +57,15 @@ export const Select = ({ placeholder, value, onSelect }: SelectProps) => {
 
         {open && (
           <ul className="z-2 absolute mt-1 w-full rounded bg-gray-50 ring-1 ring-gray-300">
-            <li
-              className="cursor-pointer select-none p-2 hover:bg-gray-200 flex gap-2"
-              onMouseDown={() => onSelect("angular")}
-            >
-              <Image src={angular} alt="angular" /> Angular
-            </li>
-            <li
-              className="cursor-pointer select-none p-2 hover:bg-gray-200  flex gap-2"
-              onMouseDown={() => onSelect("reactjs")}
-            >
-              <Image src={reactjs} alt="reactjs" />
-              React
-            </li>
-            <li
-              className="cursor-pointer select-none p-2 hover:bg-gray-200  flex gap-2"
-              onMouseDown={() => onSelect("vuejs")}
-            >
-              <Image src={vuejs} alt="vuejs" /> Vuejs
-            </li>
+            {items.map((x) => (
+              <li
+                key={x.key}
+                className="cursor-pointer select-none p-2 hover:bg-gray-200 flex gap-2 align-items"
+                onMouseDown={() => onSelect(x.key)}
+              >
+                {x.icon} {x.label}
+              </li>
+            ))}
           </ul>
         )}
       </div>
