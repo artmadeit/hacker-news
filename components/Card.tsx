@@ -53,18 +53,15 @@ export const Card = ({
 
         .card {
           display: flex;
+          justify-content: space-between;
           padding-left: 1.625rem;
-          margin: 1rem;
-          // width: 34.375rem;
-          width: 27rem;
           border-radius: 6px;
           border: solid 1px #979797;
           background-color: #fff;
         }
 
         p {
-          // width: 27.5rem;
-          width: 20rem;
+          padding-right: 2rem;
           height: 2.5rem;
           margin: 0.375rem 1rem 0.875rem 0;
           font-size: 0.875rem;
