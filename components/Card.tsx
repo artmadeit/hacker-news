@@ -5,6 +5,7 @@ import time from "../public/images/time.svg";
 import TimeAgo from "react-timeago";
 
 export type Post = {
+  objectID: string;
   author: string;
   story_title: string;
   story_url: string;
