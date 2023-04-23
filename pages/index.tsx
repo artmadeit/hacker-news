@@ -45,9 +45,9 @@ const NextPageHacker = () => {
         <Tabs activeTab={activeTab} onChangeTab={setActiveTab} />
       </div>
       <div>
-        <Search/>
+        <Search />
       </div>
-      <div>
+      <div className="wrapper">
         {posts &&
           posts.map((post, index) => (
             <Card
@@ -58,6 +58,13 @@ const NextPageHacker = () => {
             />
           ))}
       </div>
+      <style jsx>{`
+        .wrapper {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-gap: 10px;
+        }
+      `}</style>
     </div>
   );
 };
