@@ -1,4 +1,5 @@
 import { Card, Post } from "@/components/Card";
+import { Search } from "@/components/Search";
 import { Tabs } from "@/components/Tabs";
 import { Header } from "@/components/header";
 import Head from "next/head";
@@ -54,6 +55,9 @@ const NextPageHacker = () => {
         <Tabs activeTab={activeTab} onChangeTab={setActiveTab} />
       </div>
       <div>
+        <Search />
+      </div>
+      <div className="wrapper">
         {posts &&
           posts.map((post, index) => (
             <Card
@@ -64,6 +68,13 @@ const NextPageHacker = () => {
             />
           ))}
       </div>
+      <style jsx>{`
+        .wrapper {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-gap: 10px;
+        }
+      `}</style>
     </div>
   );
 };
