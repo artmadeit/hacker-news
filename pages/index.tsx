@@ -10,11 +10,6 @@ type Page = {
   hits: Post[];
 };
 
-const fetcher = async (url: string) => {
-  const data = await fetch(url).then<Page>((res) => res.json());
-  return data.hits.filter(hasRequiredProperties);
-};
-
 function hasRequiredProperties(x: Post): boolean {
   return [x.author, x.created_at, x.story_title, x.story_url].every((x) =>
     Boolean(x)
@@ -28,10 +23,24 @@ const NextPageHacker = () => {
   const [query, setQuery] = useState("");
 
   const page = 0;
-  const { data: posts } = useSWR<Post[]>(
-    `https://hn.algolia.com/api/v1/search_by_date?query=${query}&page=${page}`,
-    fetcher
-  );
+
+  const fetcher = async (params: [string, string, string]) => {
+    const [query, page, activeTab] = params;
+
+    let data = null;
+    if (activeTab === "all") {
+      data = await fetch(
+        "https://hn.algolia.com/api/v1/search_by_date?" +
+          new URLSearchParams({ query, page }),
+        {}
+      ).then<Page>((res) => res.json());
+    } else {
+      data = { hits: favoritePosts };
+    }
+    return data.hits.filter(hasRequiredProperties);
+  };
+
+  const { data: posts } = useSWR<Post[]>([query, page, activeTab], fetcher);
 
   const toggleFavorite = (post: Post, isFavorite: boolean) => {
     if (isFavorite) {
