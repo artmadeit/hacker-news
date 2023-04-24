@@ -4,7 +4,7 @@ import { TabValues, Tabs } from "@/components/Tabs";
 import { Header } from "@/components/header";
 import Head from "next/head";
 import { useState } from "react";
-import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
 import { useLocalStorage } from "usehooks-ts";
 
 type Page = {
@@ -16,6 +16,8 @@ function hasRequiredProperties(x: Post): boolean {
     Boolean(x)
   );
 }
+
+const fetcher = (url: string) => fetch(url).then<Page>((res) => res.json());
 
 export const Home = () => {
   const [activeTab, setActiveTab] = useLocalStorage<TabValues>(
@@ -29,25 +31,13 @@ export const Home = () => {
 
   const [query, setQuery] = useState("");
 
-  const page = 0;
-
-  const fetcher = async (params: [string, string, string]) => {
-    const [query, page, activeTab] = params;
-
-    let data = null;
-    if (activeTab === "all") {
-      data = await fetch(
-        "https://hn.algolia.com/api/v1/search_by_date?" +
-          new URLSearchParams({ query, page }),
-        {}
-      ).then<Page>((res) => res.json());
-    } else {
-      data = { hits: favoritePosts };
-    }
-    return data.hits.filter(hasRequiredProperties);
-  };
-
-  const { data: posts } = useSWR<Post[]>([query, page, activeTab], fetcher);
+  const { data, size, setSize } = useSWRInfinite((pageIndex) => {
+    return (
+      "https://hn.algolia.com/api/v1/search_by_date?" +
+      new URLSearchParams({ query, page: String(pageIndex) })
+    );
+  }, fetcher);
+  const postPages = activeTab === "all" ? data : [{ hits: favoritePosts }];
 
   const toggleFavorite = (post: Post, isFavorite: boolean) => {
     if (isFavorite) {
@@ -85,17 +75,25 @@ export const Home = () => {
         )}
 
         <div className="posts py-4">
-          {posts &&
-            posts.map((post, index) => (
-              <Card
-                key={index}
-                post={post}
-                isFavorite={favoritePosts
-                  .map((x) => x.objectID)
-                  .includes(post.objectID)}
-                toggleFavorite={toggleFavorite}
-              />
-            ))}
+          {postPages?.map(
+            (posts) =>
+              posts &&
+              posts.hits
+                .filter(hasRequiredProperties)
+                .map((post, index) => (
+                  <Card
+                    key={index}
+                    post={post}
+                    isFavorite={favoritePosts
+                      .map((x) => x.objectID)
+                      .includes(post.objectID)}
+                    toggleFavorite={toggleFavorite}
+                  />
+                ))
+          )}
+        </div>
+        <div>
+          <button onClick={() => setSize(size + 1)}>Load More</button>
         </div>
       </div>
       <style jsx>{`
