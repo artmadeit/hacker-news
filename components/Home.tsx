@@ -1,7 +1,7 @@
 import { Card, Post } from "@/components/Card";
 import { Select } from "@/components/Select";
 import { TabValues, Tabs } from "@/components/Tabs";
-import { Header } from "@/components/header";
+import { Header } from "@/components/Header";
 import Head from "next/head";
 import { useState } from "react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
