@@ -22,8 +22,8 @@ export const Card = ({
   toggleFavorite: Function;
 }) => {
   return (
-    <div className="card">
-      <a href={post.story_url} target="_blank">
+    <div className="card hover:opacity-40 cursor-pointer">
+      <a href={post.story_url} target="_blank" className="link">
         <div className="flex align-items title">
           <Image src={time} alt="favorite" />
           <div className="pl-2">
@@ -34,7 +34,6 @@ export const Card = ({
       </a>
       <div className="favorite-container">
         <Image
-          className="cursor-pointer"
           src={isFavorite ? favorite : favoriteOutline}
           alt="favorite"
           width={24}
@@ -45,16 +44,21 @@ export const Card = ({
 
       <style jsx>{`
         .favorite-container {
-          width: 4.25rem;
+          width: 15%;
           padding: 2.188rem 1.375rem 2.063rem;
           border-radius: 6px;
           border: solid 1px #f5f5f5;
           background-color: #f5f5f5;
         }
 
+        .link {
+          width: 85%;
+        }
+
         .card {
           display: flex;
           justify-content: space-between;
+          width: 100%;
           padding-left: 1.625rem;
           border-radius: 6px;
           border: solid 1px #979797;

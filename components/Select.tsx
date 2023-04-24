@@ -43,7 +43,7 @@ export const Select = ({ placeholder, value, onSelect }: SelectProps) => {
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="flex w-full items-center justify-between rounded bg-white p-2 ring-1 ring-gray-300"
+          className="flex w-full items-center justify-between rounded bg-white p-2 pl-4 ring-1 ring-neutral-800"
         >
           <span>
             {value == ""
