@@ -85,7 +85,7 @@ export const Home = () => {
       <div className="py-16 flex justify-center">
         <Tabs activeTab={activeTab} onChangeTab={setActiveTab} />
       </div>
-      <div className="container mx-auto px-36">
+      <div className="container mx-auto lg:px-20 px-3">
         {activeTab === "all" && (
           <div className="pb-4">
             <Select
@@ -122,9 +122,16 @@ export const Home = () => {
       <style jsx>{`
         .posts {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
+          // grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
           grid-gap: 2rem;
+
+          @media(max-width: 425px){
+            grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+          }
         }
+
+        
       `}</style>
     </div>
   );

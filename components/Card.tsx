@@ -44,7 +44,7 @@ export const Card = ({
 
       <style jsx>{`
         .favorite-container {
-          width: 15%;
+          // width: 15%;
           padding: 2.188rem 1.375rem 2.063rem;
           border-radius: 6px;
           border: solid 1px #f5f5f5;
@@ -67,7 +67,7 @@ export const Card = ({
 
         p {
           padding-right: 2rem;
-          height: 2.5rem;
+          // height: 2.5rem;
           margin: 0.375rem 1rem 0.875rem 0;
           font-size: 0.875rem;
           font-weight: 500;
