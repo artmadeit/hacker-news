@@ -4,11 +4,15 @@ import { TabValues, Tabs } from "@/components/Tabs";
 import { Header } from "@/components/header";
 import Head from "next/head";
 import { useState } from "react";
+import useInfiniteScroll from "react-infinite-scroll-hook";
 import useSWRInfinite from "swr/infinite";
+import { useDebouncedCallback } from "use-debounce";
 import { useLocalStorage } from "usehooks-ts";
 
 type Page = {
   hits: Post[];
+  page: number;
+  nbPages: number;
 };
 
 function hasRequiredProperties(x: Post): boolean {
@@ -31,13 +35,20 @@ export const Home = () => {
 
   const [query, setQuery] = useState("");
 
-  const { data, size, setSize } = useSWRInfinite((pageIndex) => {
-    return (
-      "https://hn.algolia.com/api/v1/search_by_date?" +
-      new URLSearchParams({ query, page: String(pageIndex) })
-    );
-  }, fetcher);
-  const postPages = activeTab === "all" ? data : [{ hits: favoritePosts }];
+  const { data, size, setSize, isLoading, error } = useSWRInfinite(
+    (pageIndex, previousPageData) => {
+      if (previousPageData?.page == pageIndex) return null;
+      return activeTab === "all"
+        ? `https://hn.algolia.com/api/v1/search_by_date?query=${query}&page=${pageIndex}`
+        : null;
+    },
+    fetcher,
+    {
+      revalidateFirstPage: false,
+    }
+  );
+  const postPages =
+    activeTab === "all" ? data : [{ hits: favoritePosts, page: 0, nbPages: 1 }];
 
   const toggleFavorite = (post: Post, isFavorite: boolean) => {
     if (isFavorite) {
@@ -48,6 +59,17 @@ export const Home = () => {
       setFavoritePosts((prev) => [...prev, post]);
     }
   };
+
+  const loadMore = useDebouncedCallback(() => setSize(size + 1), 500);
+
+  const hasNextPage = true;
+  const [sentryRef] = useInfiniteScroll({
+    loading: isLoading,
+    hasNextPage,
+    onLoadMore: loadMore,
+    disabled: !!error,
+    rootMargin: "0px 0px 400px 0px",
+  });
 
   return (
     <div
@@ -73,16 +95,15 @@ export const Home = () => {
             />
           </div>
         )}
-
         <div className="posts py-4">
           {postPages?.map(
             (posts) =>
               posts &&
               posts.hits
                 .filter(hasRequiredProperties)
-                .map((post, index) => (
+                .map((post) => (
                   <Card
-                    key={index}
+                    key={post.objectID}
                     post={post}
                     isFavorite={favoritePosts
                       .map((x) => x.objectID)
@@ -92,9 +113,11 @@ export const Home = () => {
                 ))
           )}
         </div>
-        <div>
-          <button onClick={() => setSize(size + 1)}>Load More</button>
-        </div>
+        {activeTab === "all" && (isLoading || hasNextPage) && (
+          <div ref={sentryRef} className="py-2">
+            Loading..
+          </div>
+        )}
       </div>
       <style jsx>{`
         .posts {
